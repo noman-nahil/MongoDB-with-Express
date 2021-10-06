@@ -27,9 +27,19 @@ const newStudent = async (req, res) => {
 
 }
 
-const studentDetails = (req, res) => {
-    const id = parseInt(req.params.id);
+const studentDetails = async (req, res) => {
+    const id = req.params.id;
     //console.log(id)
+    try {
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).send("ID not found!")
+        }
+        res.send(student);
+    }
+    catch (err) {
+        return res.status(404).send("ID not found!")
+    }
 
 }
 const updateStudent = (req, res) => {
