@@ -6,8 +6,21 @@ const { Student } = require('../models/students')
 const studentList = (req, res) => { }
 
 
-const newStudent = (req, res) => {
-    const student = req.body;
+const newStudent = async (req, res) => {
+    //const student = req.body;
+    const student = new Student(req.body);
+    try {
+        const result = await student.save();
+        res.send(result);
+    }
+    catch (err) {
+        //console.log()
+        const errMsg = [];
+        for (field in err.errors) {
+            errMsg.push(err.errors[field].message);
+        }
+        return res.status(400).send(errMsg);
+    }
 
 }
 
