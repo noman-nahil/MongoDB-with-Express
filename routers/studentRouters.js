@@ -3,7 +3,10 @@ const router = express.Router();
 const { Student } = require('../models/students')
 
 //Named Function
-const studentList = (req, res) => { }
+const studentList = async (req, res) => {
+    const students = await Student.find();
+    res.send(students);
+}
 
 
 const newStudent = async (req, res) => {
