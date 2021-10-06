@@ -2,22 +2,19 @@
 const express = require('express');
 const app = express();
 const studentRouter = require('./routers/studentRouters')
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost:27017/my-students-2', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => console.error("Connection Failed"));
 
 app.use(express.json());
 app.use('/api/students', studentRouter);
 
 
-
-//
-/*
-app.get('/api/students', studentList);
-app.post('/api/students', newStudent);
-app.get('/api/students/:id', studentDetails);
-app.put('/api/students/:id', updateStudent);
-app.delete('/api/students/:id', deleteStudent);*/
-
-//
 const port = 3000;
 
 app.listen(port, () => {

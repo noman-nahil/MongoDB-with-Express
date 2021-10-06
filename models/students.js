@@ -1,4 +1,4 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const Student = model('Student', Schema({
     name: { type: String },
@@ -12,4 +12,5 @@ const Student = model('Student', Schema({
         },
     }
 }));
+
 exports.Student = Student;
