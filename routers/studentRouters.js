@@ -47,7 +47,7 @@ const updateStudent = async (req, res) => {
     //console.log(id)
     const updateInfo = req.body;
     try {
-        const student = await Student.findByIdAndUpdate(id, updateInfo, { new: true })
+        const student = await Student.findByIdAndUpdate(id, { ...updateInfo }, { new: true, useFindAndModify: false })
         if (!student) {
             return res.status(404).send("ID not found!")
         }
@@ -59,9 +59,19 @@ const updateStudent = async (req, res) => {
 
 }
 
-const deleteStudent = (req, res) => {
-    const id = parseInt(req.params.id);
+const deleteStudent = async (req, res) => {
+    const id = req.params.id;
     //console.log(id)
+    try {
+        const student = await Student.findByIdAndDelete(id)
+        if (!student) {
+            return res.status(404).send("ID not found!")
+        }
+        res.send(student);
+    }
+    catch (err) {
+        return res.status(404).send("ID not found!")
+    }
 
 }
 
@@ -72,7 +82,7 @@ router.route('/')
 
 router.route('/:id')
     .get(studentDetails)
-    .put(newStudent).
+    .put(updateStudent).
     delete(deleteStudent);
 
 module.exports = router;
