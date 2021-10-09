@@ -1,28 +1,28 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
 //Express
 const express = require('express');
 const app = express();
 const studentRouter = require('./routers/studentRouters')
 const userRouter = require('./routers/userRouter')
 const authRouter = require('./routers/authRouter')
-const mongoose = require('mongoose');
+const morgan = require('morgan');
 
-mongoose.connect('mongodb://localhost:27017/my-students-2', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    //useCreateIndex: true
-})
-    .then(() => console.log("Connected to MongoDB"))
-    .catch(err => console.error("Connection Failed"));
+
+
+if (process.env.NODE_ENV === 'development') {
+    console.log("Development")
+    app.use(morgan('dev'));
+}
+const STUDENTS = process.env.STUDENTS;
+const REGISTER = process.env.REGISTER;
+const LOGIN = process.env.LOGIN;
 
 app.use(express.json());
-app.use('/api/students', studentRouter);
-app.use('/register', userRouter);
-app.use('/login', authRouter);
+app.use(STUDENTS, studentRouter);
+app.use(REGISTER, userRouter);
+app.use(LOGIN, authRouter);
 
 
-const port = 3000;
-
-app.listen(port, () => {
-    console.log('App listening on port ' + port + '!');
-});
+module.exports = app;
 
