@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const { User } = require('../models/users');
+const authorize = require('../middleware/authorize');
 
 
 
@@ -34,8 +35,11 @@ const newUser = async (req, res) => {
 
 }
 
-router.route('/')
+router.route('/register')
     .post(newUser);
-
+router.route('/me')
+    .get(authorize, (req, res) => {
+        res.send(req.user)
+    })
 
 module.exports = router;
