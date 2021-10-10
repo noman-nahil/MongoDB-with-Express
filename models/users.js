@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const User = model('User', Schema({
+const userSchema = Schema({
     name: {
         type: String,
         required: true,
@@ -20,6 +20,12 @@ const User = model('User', Schema({
         maxlength: 1024,
     }
 
-}));
+});
+userSchema.methods.generateJWT = function () {
+    const token = jwt.sign({ _id: this._id, email: this.email }, process.env.mySecretKey);
+    return token;
+}
+const User = model('User', userSchema);
+
 
 exports.User = User;
