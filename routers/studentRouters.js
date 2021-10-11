@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { Student } = require('../models/students')
-const authorize = require('../middleware/authorize')
+const { Student } = require('../models/students');
+const authorize = require('../middleware/authorize');
+const admin = require('../middleware/admin');
 //Named Function
 const studentList = async (req, res) => {
 
@@ -84,7 +85,7 @@ router.route('/')
 
 router.route('/:id')
     .get(studentDetails)
-    .put(updateStudent).
-    delete(deleteStudent);
+    .put(updateStudent)
+    .delete([authorize, admin], deleteStudent);
 
 module.exports = router;

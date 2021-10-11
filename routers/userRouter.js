@@ -14,7 +14,7 @@ const newUser = async (req, res) => {
     user = new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
     });
     const salt = await bcrypt.genSalt(10)
     user.password = await bcrypt.hash(user.password, salt)
@@ -22,7 +22,7 @@ const newUser = async (req, res) => {
         const result = await user.save();
         res.send({
             name: result.name,
-            emai: result.email,
+            email: result.email,
         });
     }
     catch (err) {
